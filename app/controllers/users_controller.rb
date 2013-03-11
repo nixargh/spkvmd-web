@@ -12,6 +12,7 @@ class UsersController < ApplicationController
   def create
 	@user = User.new(params[:user])
 	if @user.save
+		sign_in @user
 		flash[:success] = "You successfully registered at spkvmd Web Administration!"
 		redirect_to @user
 	else
