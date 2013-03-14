@@ -14,4 +14,8 @@ class PagesController < ApplicationController
   def help
   	@title = 'help'
   end
+  
+  def spkvmd
+  	@title = 'spkvmd'
+  end
 end
