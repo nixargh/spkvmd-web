@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+
   def home
   	@title = "home"
   end
@@ -15,7 +16,4 @@ class PagesController < ApplicationController
   	@title = 'help'
   end
   
-  def spkvmd
-  	@title = 'spkvmd'
-  end
 end

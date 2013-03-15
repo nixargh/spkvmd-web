@@ -1,4 +1,9 @@
 SpkvmdWeb::Application.routes.draw do
+  get "vms/new"
+
+  get "vms/show"
+
+	resources :vms
 	resources :users
 	resources :sessions, :only => [:new, :create, :destroy]
 
@@ -10,7 +15,6 @@ SpkvmdWeb::Application.routes.draw do
 	match '/signup', :to => 'users#new'
 	match '/signin', :to => 'sessions#new'
 	match '/signout', :to => 'sessions#destroy'
-	match '/spkvmd', :to => 'pages#spkvmd'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

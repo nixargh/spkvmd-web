@@ -1,0 +1,18 @@
+<h1>Administration Page</h1>
+<p>Список виртуальных машин.</p>
+<table>
+	<tr align="center" bgcolor="#999999">
+		<td><b>VM Name</b></td>
+		<% @top_result.values.first.each_key do |stat_name| %>
+			<td><b><%= stat_name %></b></td>
+		<% end %>
+	</tr>
+	<% @top_result.each do |vm, info| %>
+		<tr>
+			<td><b><%= vm %></b></td>
+			<% info.each_value do |stat| %>
+				<td><%= stat %></td>
+			<% end %>
+		</tr>
+	<% end %>
+</table>
