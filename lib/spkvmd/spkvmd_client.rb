@@ -2,7 +2,7 @@
 # encoding: utf-8
 module SpkvmdClient
 
-	def self.test
+	def get_vm_list
 		require "socket"
 		s = TCPSocket.open("192.168.1.10", 5418)
 		s.gets

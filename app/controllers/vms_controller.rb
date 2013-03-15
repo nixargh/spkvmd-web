@@ -3,6 +3,6 @@ class VmsController < ApplicationController
 
 	def index
 		@title = 'VM\'s List'
-		@top_result = SpkvmdClient.test
+		@top_result = get_vm_list
 	end
 end
