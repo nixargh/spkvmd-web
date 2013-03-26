@@ -4,7 +4,7 @@ module SpkvmdClient
 
 	def get_vm_list
 		require "socket"
-		s = TCPSocket.open("192.168.1.10", 5418)
+		s = TCPSocket.open("192.168.1.10", 5419)
 		s.gets
 		s.puts "kvm"
 		s.gets
@@ -35,5 +35,19 @@ module SpkvmdClient
 			vm_list[vm] = info_hash
 		}
 		vm_list
+	end
+
+	def start_vm(vm)
+		require "socket"
+		s = TCPSocket.open("192.168.1.10", 5418)
+		s.puts "kvm start #{vm}"
+		status = s.gets.chomp
+	end
+
+	def stop_vm(vm)
+		require "socket"
+		s = TCPSocket.open("192.168.1.10", 5418)
+		s.puts "kvm stop #{vm}"
+		status = s.gets.chomp
 	end
 end

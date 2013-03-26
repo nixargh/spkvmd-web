@@ -1,8 +1,6 @@
 SpkvmdWeb::Application.routes.draw do
-  get "vms/new"
-
-  get "vms/show"
-
+	get "vms/startvm"
+	get "vms/stopvm"
 	resources :vms
 	resources :users
 	resources :sessions, :only => [:new, :create, :destroy]

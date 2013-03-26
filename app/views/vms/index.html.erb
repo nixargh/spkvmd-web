@@ -6,6 +6,7 @@
 		<% @top_result.values.first.each_key do |stat_name| %>
 			<td><b><%= stat_name %></b></td>
 		<% end %>
+		<td><b>action</b></td>
 	</tr>
 	<% @top_result.each do |vm, info| %>
 		<tr>
@@ -13,6 +14,8 @@
 			<% info.each_value do |stat| %>
 				<td><%= stat %></td>
 			<% end %>
+			<td><%= link_to 'Start', :controller=>'vms', :action=>'startvm', :vm => vm %></td>
+			<td><%= link_to 'Stop', :controller=>'vms', :action=>'stopvm', :vm => vm %></td>
 		</tr>
 	<% end %>
 </table>
