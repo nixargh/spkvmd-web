@@ -31,12 +31,10 @@ class UsersController < ApplicationController
   end
 
 	def edit
-#		@user = User.find(params[:id])
 		@title = "Edit user"
 	end
 
 	def update
-#		@user = User.find(params[:id])
 		if @user.update_attributes(params[:user])
 			flash[:success] = "Profile updated."
 			redirect_to @user
@@ -53,10 +51,6 @@ class UsersController < ApplicationController
 	end
 
 	private
-
-	def authenticate
-		deny_access unless signed_in?
-	end
 
 	def correct_user
 		@user = User.find(params[:id])

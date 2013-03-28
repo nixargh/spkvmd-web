@@ -1,23 +1,45 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 module SpkvmdClient
-
 	def get_vm_list
+		code, info = ask_daemon "kvm list"
+		if code == 0
+			return parse_vm_list(info)
+		else
+			raise info
+		end
+	end
+
+	def start_vm(vm)
+		spkvmd_client_operate_vm(vm, 'start')
+	end
+
+	def stop_vm(vm)
+		spkvmd_client_operate_vm(vm, 'stop')
+	end
+
+private
+	
+	def spkvmd_client_operate_vm(vm, cmd)
+		code, info = ask_daemon "kvm #{cmd} #{vm}"
+		raise info if code != 0
+		return code, info
+	end
+	
+	def ask_daemon(cmd)
 		require "socket"
-		s = TCPSocket.open("192.168.1.10", 5419)
-		s.gets
-		s.puts "kvm"
-		s.gets
-		s.puts "list"
-		s.gets
-		vm_list = s.gets.chomp
-		s.puts "back"
-		s.gets
-		s.puts "exit"
-		s.gets
-		s.close
-		vm_list = vm_list.split(':')[1]
-		vm_list = vm_list.split('}, ')
+		s = TCPSocket.open("192.168.1.10", 5418)
+		s.puts cmd
+		code, info = read_answer(s)	
+		return code.to_i, info
+	end
+
+	def read_answer(s)
+		code, info = s.gets.chomp.split('|', 2)
+	end
+
+	def parse_vm_list(vm_list_string)
+		vm_list = vm_list_string.split('}, ')
 		vm_list_hash = Hash.new
 		vm_list.each{|vm|
 			vm.delete!('{}" ')
@@ -37,17 +59,7 @@ module SpkvmdClient
 		vm_list
 	end
 
-	def start_vm(vm)
-		require "socket"
-		s = TCPSocket.open("192.168.1.10", 5418)
-		s.puts "kvm start #{vm}"
-		status = s.gets.chomp
-	end
-
-	def stop_vm(vm)
-		require "socket"
-		s = TCPSocket.open("192.168.1.10", 5418)
-		s.puts "kvm stop #{vm}"
-		status = s.gets.chomp
+	def parse_operation(string)
+		
 	end
 end
