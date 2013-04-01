@@ -6,7 +6,8 @@
 		<% @vm_list.values.first.each_key do |stat_name| %>
 			<td><b><%= stat_name %></b></td>
 		<% end %>
-		<td><b>actions</b></td><td></td>
+		<td><b>actions</b></td>
+		<td><b>VNC connection</b></td>
 	</tr>
 	<% @vm_list.each do |vm, info| %>
 		<tr>
@@ -14,8 +15,14 @@
 			<% info.each_value do |stat| %>
 				<td><%= stat %></td>
 			<% end %>
-			<td><%= link_to 'Start', :controller=>'vms', :action=>'startvm', :vm => vm %></td>
-			<td><%= link_to 'Stop', :controller=>'vms', :action=>'stopvm', :vm => vm %></td>
+			<td>
+				<% if running?(vm) %>
+					<%= link_to 'Stop', :controller=>'vms', :action=>'stopvm', :vm => vm %>
+				<% else %>
+					<%= link_to 'Start', :controller=>'vms', :action=>'startvm', :vm => vm %>
+				<% end %>
+			</td>
+			<td><%= link_to 'VNC', :controller=>'vms', :action=>'vnc', :vm => vm %></td>
 		</tr>
 	<% end %>
 </table>

@@ -1,6 +1,7 @@
 SpkvmdWeb::Application.routes.draw do
 	get "vms/startvm"
 	get "vms/stopvm"
+	get "vms/vnc"
 	resources :vms
 	resources :users
 	resources :sessions, :only => [:new, :create, :destroy]

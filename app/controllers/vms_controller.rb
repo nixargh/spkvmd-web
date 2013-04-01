@@ -1,11 +1,12 @@
 class VmsController < ApplicationController
 	before_filter :authenticate
 	include SpkvmdClient
+	include VmsHelper
 
 	def index
 		@title = 'VM\'s List'
 		begin
-			@vm_list = get_vm_list
+			@vm_list = spkvmdc_get_vm_list
 			#flash[:success] = "#{get_vm_list.length} virtual machines listed."
 		rescue
 			flash[:error] = "Can't get VM list: #{$!}"
@@ -14,24 +15,21 @@ class VmsController < ApplicationController
 	end
 
 	def startvm
-		operate_vm('start'){|vm| start_vm(vm)}
+		operate_vm('start'){|vm| spkvmdc_start_vm(vm)}
 	end
 
 	def stopvm
-		operate_vm('stop'){|vm| stop_vm(vm)}
+		operate_vm('stop'){|vm| spkvmdc_stop_vm(vm)}
 	end
 
-private
-
-	def operate_vm(cmd_name)
+	def vnc
+		@title = 'VM\'s VNC'
 		begin
-			vm = params[:vm]
-			yield vm
-			flash[:success] = "VM #{vm} #{cmd_name}ed."
+			@host = 'magic-beans.org'
+			@port = spkvmdc_get_vnc_settings(params[:vm])
 		rescue
-			flash[:error] = "Can't #{cmd_name} VM #{vm}: #{$!}"
+			flash[:error] = "Can't start VNC: #{$!}"
+			redirect_to :back
 		end
-		sleep 1
-		redirect_to vms_path
 	end
 end
